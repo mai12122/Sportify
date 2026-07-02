@@ -1,0 +1,5 @@
+node_modules/
+server/spotify.db
+server/spotify.db-*
+dist/
+.env
