@@ -14,11 +14,13 @@ class PlaybackStrategy {
 
 class FreePlaybackStrategy extends PlaybackStrategy {
   static MAX_SKIPS_PER_DAY = 6;
-  static BITRATE_KBPS = 128;
+  // Bitrate ladder low -> high, mirrors real ABR rungs (free tier caps below premium).
+  static LADDER_KBPS = [96, 128];
 
   evaluatePlay(user) {
     return {
-      bitrateKbps: FreePlaybackStrategy.BITRATE_KBPS,
+      bitrateKbps: FreePlaybackStrategy.LADDER_KBPS.at(-1),
+      ladderKbps: FreePlaybackStrategy.LADDER_KBPS,
       adBreak: Math.random() < 0.34, // roughly every third play
       skipsRemaining: Math.max(
         0,
@@ -30,11 +32,13 @@ class FreePlaybackStrategy extends PlaybackStrategy {
 }
 
 class PremiumPlaybackStrategy extends PlaybackStrategy {
-  static BITRATE_KBPS = 320;
+  // Bitrate ladder low -> high; ABR only climbs to the top rung on a clean connection.
+  static LADDER_KBPS = [160, 256, 320];
 
   evaluatePlay(_user) {
     return {
-      bitrateKbps: PremiumPlaybackStrategy.BITRATE_KBPS,
+      bitrateKbps: PremiumPlaybackStrategy.LADDER_KBPS.at(-1),
+      ladderKbps: PremiumPlaybackStrategy.LADDER_KBPS,
       adBreak: false,
       skipsRemaining: Infinity,
       offlineAllowed: true,

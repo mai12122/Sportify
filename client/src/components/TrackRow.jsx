@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Play, Plus, X } from 'lucide-react';
 
 function formatDuration(sec) {
   const m = Math.floor(sec / 60);
@@ -11,14 +12,44 @@ export default function TrackRow({ track, index, isPlaying, onPlay, playlists, o
 
   return (
     <div className={`track-row ${isPlaying ? 'playing' : ''}`}>
+      {/* Track Index: Swaps between Number and Play Button on hover via CSS */}
       <div className="track-index">
-        {isPlaying ? <span className="playing-bars" aria-hidden="true"><i /><i /><i /></span> : index}
+        {isPlaying ? (
+          <span className="playing-bars" aria-hidden="true">
+            <i /><i /><i />
+          </span>
+        ) : (
+          <>
+            <span className="track-index-num">{index}</span>
+            <button
+              className="track-play-btn"
+              onClick={() => onPlay(track)}
+              aria-label={`Play ${track.title}`}
+            >
+              <Play size={14} fill="currentColor" strokeWidth={0} />
+            </button>
+          </>
+        )}
       </div>
-      <button className="track-cover" style={{ background: track.coverColor }} onClick={() => onPlay(track)} aria-label={`Play ${track.title}`} />
-      <div className="track-meta" onClick={() => onPlay(track)} role="button" tabIndex={0}>
+
+      <button
+        className="track-cover"
+        style={{ background: track.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }}
+        onClick={() => onPlay(track)}
+        aria-label={`Play ${track.title}`}
+      />
+
+      <button
+        type="button"
+        className="track-meta"
+        onClick={() => onPlay(track)}
+        title={`Play ${track.title}`}
+        aria-label={`Play ${track.title}`}
+      >
         <div className="track-title">{track.title}</div>
         <div className="track-artist">{track.artist}</div>
-      </div>
+      </button>
+
       <div className="track-album">{track.album}</div>
       <div className="track-duration">{formatDuration(track.durationSec)}</div>
 
@@ -26,7 +57,7 @@ export default function TrackRow({ track, index, isPlaying, onPlay, playlists, o
         {playlists && (
           <div className="track-menu-wrap">
             <button className="icon-btn" onClick={() => setMenuOpen((o) => !o)} title="Add to playlist">
-              ＋
+              <Plus size={16} strokeWidth={2.5} />
             </button>
             {menuOpen && (
               <div className="track-menu" onMouseLeave={() => setMenuOpen(false)}>
@@ -48,7 +79,7 @@ export default function TrackRow({ track, index, isPlaying, onPlay, playlists, o
         )}
         {onRemove && (
           <button className="icon-btn" title="Remove from playlist" onClick={() => onRemove(track.id)}>
-            ✕
+            <X size={16} strokeWidth={2.5} />
           </button>
         )}
       </div>

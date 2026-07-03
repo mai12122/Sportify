@@ -28,6 +28,7 @@ export const api = {
   songs: (q = '') => request(`/songs${q ? `?q=${encodeURIComponent(q)}` : ''}`),
   play: (songId) => request(`/songs/${songId}/play`, { method: 'POST', auth: true }),
   skip: (songId) => request(`/songs/${songId}/skip`, { method: 'POST', auth: true }),
+  adapt: (songId) => request(`/songs/${songId}/adapt`, { method: 'POST', auth: true }),
 
   playlists: () => request('/playlists', { auth: true }),
   createPlaylist: (name) => request('/playlists', { method: 'POST', body: { name }, auth: true }),

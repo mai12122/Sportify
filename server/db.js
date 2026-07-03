@@ -77,6 +77,8 @@ if (artistCount === 0) {
     ['The Vantablacks', 'Post-punk revival act.'],
     ['Coral Static', 'Ambient / downtempo electronic.'],
     ['Juno Ledger', 'Singer-songwriter, folk-adjacent.'],
+    ['Olivia Rodrigo', 'Pop-rock singer-songwriter known for confessional lyrics.'],
+    ['Ariana Grande', 'Pop and R&B artist with a four-octave vocal range.'],
   ];
   const artistIds = artists.map(a => insertArtist.run(...a).lastInsertRowid);
 
@@ -85,18 +87,43 @@ if (artistCount === 0) {
   );
   const palette = ['#1ED760', '#F5A623', '#E85D75', '#4C6FFF', '#9B59B6', '#2EC4B6'];
   const songs = [
+    // Nova Ridge (index 0)
     ['Glass Horizon', 0, 'Afterglow', 214, 0, 12450],
     ['Static Bloom', 0, 'Afterglow', 198, 1, 8320],
+    ['Neon Ledger', 0, 'Afterglow', 208, 5, 9100],
+    
+    // Marlowe Str. (index 1)
     ['Paper Tide', 1, 'Slow Rooms', 231, 2, 15230],
     ['Low Light', 1, 'Slow Rooms', 187, 3, 6110],
+    
+    // The Vantablacks (index 2)
     ['Concrete Halo', 2, 'Kill the Radio', 245, 4, 20110],
     ['Night Shift', 2, 'Kill the Radio', 202, 5, 9870],
+    ['Amber Static', 2, 'Kill the Radio', 190, 4, 3300],
+    
+    // Coral Static (index 3)
     ['Salt Water', 3, 'Coral Static', 265, 0, 4210],
     ['Drift Mode', 3, 'Coral Static', 300, 1, 5010],
+    
+    // Juno Ledger (index 4)
     ['Ledger Lines', 4, 'Open Roads', 176, 2, 13200],
     ['Quiet Fields', 4, 'Open Roads', 220, 3, 7890],
-    ['Amber Static', 2, 'Kill the Radio', 190, 4, 3300],
-    ['Neon Ledger', 0, 'Afterglow', 208, 5, 9100],
+    
+    // Olivia Rodrigo (index 5)
+    ['drivers license', 5, 'SOUR', 242, 2, 2450000],
+    ['good 4 u', 5, 'SOUR', 178, 3, 1890000],
+    ['deja vu', 5, 'SOUR', 215, 4, 1230000],
+    ['vampire', 5, 'GUTS', 219, 5, 980000],
+    ['bad idea right?', 5, 'GUTS', 185, 0, 750000],
+    ['traitor', 5, 'SOUR', 229, 1, 1100000],
+    
+    // Ariana Grande (index 6)
+    ['thank u, next', 6, 'thank u, next', 205, 3, 2100000],
+    ['7 rings', 6, 'thank u, next', 178, 4, 1950000],
+    ['positions', 6, 'Positions', 192, 5, 1450000],
+    ['pov', 6, 'Positions', 211, 0, 980000],
+    ['imagine', 6, 'thank u, next', 212, 1, 1120000],
+    ['34+35', 6, 'Positions', 173, 2, 1340000],
   ];
   for (const [title, artistIdx, album, dur, colorIdx, plays] of songs) {
     insertSong.run(title, artistIds[artistIdx], album, dur, palette[colorIdx], plays);
