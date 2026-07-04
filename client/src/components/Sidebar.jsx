@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Search, Star, Plus } from 'lucide-react';
+import { Home, Search, Star, Plus, Trash2 } from 'lucide-react';
 
 const NAV = [
   { id: 'home', label: 'Home', icon: Home },
@@ -7,10 +7,12 @@ const NAV = [
   { id: 'premium', label: 'Premium', icon: Star },
 ];
 
-export default function Sidebar({ view, setView, playlists, activePlaylistId, setActivePlaylistId, onCreatePlaylist }) {
+export default function Sidebar({ view, setView, playlists, activePlaylistId, setActivePlaylistId, onCreatePlaylist, onDeletePlaylist }) {
   const [newName, setNewName] = useState('');
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
+  const [hoveredPlaylist, setHoveredPlaylist] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   async function submitCreate(e) {
     e.preventDefault();
@@ -22,6 +24,21 @@ export default function Sidebar({ view, setView, playlists, activePlaylistId, se
       setCreating(false);
     } catch (err) {
       setError(err.message);
+    }
+  }
+
+  async function handleDelete(e, playlistId) {
+    e.stopPropagation();
+    if (!confirm('Delete this playlist? This cannot be undone.')) return;
+    
+    try {
+      setDeletingId(playlistId);
+      await onDeletePlaylist(playlistId);
+    } catch (err) {
+      alert('Failed to delete playlist: ' + err.message);
+    } finally {
+      setDeletingId(null);
+      setHoveredPlaylist(null);
     }
   }
 
@@ -79,18 +96,34 @@ export default function Sidebar({ view, setView, playlists, activePlaylistId, se
       <div className="playlist-list">
         {playlists.length === 0 && <div className="empty-hint">Create your first playlist</div>}
         {playlists.map((p) => (
-          <button
+          <div
             key={p.id}
-            className={`playlist-item ${view === 'playlist' && activePlaylistId === p.id ? 'active' : ''}`}
-            onClick={() => {
-              setActivePlaylistId(p.id);
-              setView('playlist');
-            }}
+            className="playlist-item-wrapper"
+            onMouseEnter={() => setHoveredPlaylist(p.id)}
+            onMouseLeave={() => setHoveredPlaylist(null)}
           >
-            <span className="playlist-swatch" style={{ background: p.tracks[0]?.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }} />
-            <span className="playlist-name">{p.name}</span>
-            <span className="playlist-count">{p.tracks.length}</span>
-          </button>
+            <button
+              className={`playlist-item ${view === 'playlist' && activePlaylistId === p.id ? 'active' : ''}`}
+              onClick={() => {
+                setActivePlaylistId(p.id);
+                setView('playlist');
+              }}
+            >
+              <span className="playlist-swatch" style={{ background: p.tracks[0]?.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }} />
+              <span className="playlist-name">{p.name}</span>
+              <span className="playlist-count">{p.tracks.length}</span>
+            </button>
+            {hoveredPlaylist === p.id && (
+              <button
+                className="playlist-delete-btn"
+                onClick={(e) => handleDelete(e, p.id)}
+                disabled={deletingId === p.id}
+                title="Delete playlist"
+              >
+                {deletingId === p.id ? '...' : <Trash2 size={14} />}
+              </button>
+            )}
+          </div>
         ))}
       </div>
     </aside>

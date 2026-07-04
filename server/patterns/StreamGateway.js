@@ -58,7 +58,12 @@ class StreamGateway {
     const latencyMs = Math.round(
       state.latencyMs[0] + Math.random() * (state.latencyMs[1] - state.latencyMs[0])
     );
-    const startIndex = clamp(Math.floor(startScore * ladder.length), 0, ladder.length - 1);
+    // If the playback hint already requested the top rung (e.g. Premium strategy),
+    // start at the top to give Premium users the best experience immediately.
+    let startIndex = clamp(Math.floor(startScore * ladder.length), 0, ladder.length - 1);
+    if (playback && playback.bitrateKbps && ladder[ladder.length - 1] === playback.bitrateKbps) {
+      startIndex = ladder.length - 1;
+    }
 
     const streamUrl = `https://cdn.local/stream/${song.id}?br=${ladder[startIndex]}`;
 

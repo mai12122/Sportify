@@ -99,11 +99,33 @@ export default function App() {
   async function handleUpgrade() {
     const data = await api.upgrade();
     setUser(data.user);
+    // If currently playing, clear any ad break and apply premium playback hints immediately
+    setPlayback((p) =>
+      p
+        ? {
+            ...p,
+            adBreak: false,
+            skipsRemaining: Infinity,
+            bitrateKbps: Math.max(p.bitrateKbps || 0, 320),
+          }
+        : p
+    );
   }
 
   async function handleDowngrade() {
     const data = await api.downgrade();
     setUser(data.user);
+    // Apply free-tier constraints to current playback
+    setPlayback((p) =>
+      p
+        ? {
+            ...p,
+            // allow server-side logic to insert adBreak on next play; for now clear bitrate and set skips
+            bitrateKbps: Math.min(p.bitrateKbps || 320, 128),
+            skipsRemaining: Math.max(0, (p.skipsRemaining === Infinity ? 6 : p.skipsRemaining)),
+          }
+        : p
+    );
   }
 
   function handleRefreshNotifications() {
@@ -124,6 +146,7 @@ export default function App() {
         activePlaylistId={activePlaylistId}
         setActivePlaylistId={setActivePlaylistId}
         onCreatePlaylist={handleCreatePlaylist}
+        onDeletePlaylist={handleDeletePlaylist}
       />
 
       <div className="main-col">
@@ -132,6 +155,7 @@ export default function App() {
           notifications={notifications}
           onLogout={handleLogout}
           onRefreshNotifications={handleRefreshNotifications}
+          onUpdateUser={setUser}
         />
 
         <main className="main-content">
@@ -156,7 +180,7 @@ export default function App() {
           {view === 'premium' && <Premium user={user} onUpgrade={handleUpgrade} onDowngrade={handleDowngrade} />}
         </main>
 
-        <Player track={currentTrack} playback={playback} onSkip={handleSkip} skipDisabledReason={skipDisabledReason} />
+        <Player track={currentTrack} playback={playback} onSkip={handleSkip} skipDisabledReason={skipDisabledReason} user={user} />
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ function publicUser(row) {
     displayName: row.display_name,
     tier: row.tier,
     skipsUsedToday: row.skips_used_today,
+    createdAt: row.created_at,
   };
 }
 
@@ -47,7 +48,25 @@ router.post('/login', (req, res) => {
 router.get('/me', requireAuth, (req, res) => {
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.userId);
   if (!user) return res.status(404).json({ error: 'User not found.' });
-  res.json({ user: publicUser(user) });
+  // include playlist count
+  const count = db.prepare('SELECT COUNT(*) AS c FROM playlists WHERE user_id = ?').get(req.userId).c;
+  const u = publicUser(user);
+  u.playlistCount = count;
+  res.json({ user: u });
+});
+
+router.patch('/me', requireAuth, (req, res) => {
+  // Accept either camelCase or snake_case from clients
+  const body = req.body || {};
+  const displayName = body.displayName || body.display_name;
+  if (!displayName || !displayName.trim()) return res.status(400).json({ error: 'displayName is required.' });
+  db.prepare('UPDATE users SET display_name = ? WHERE id = ?').run(displayName.trim(), req.userId);
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.userId);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+  const count = db.prepare('SELECT COUNT(*) AS c FROM playlists WHERE user_id = ?').get(req.userId).c;
+  const u = publicUser(user);
+  u.playlistCount = count;
+  res.json({ user: u });
 });
 
 module.exports = router;

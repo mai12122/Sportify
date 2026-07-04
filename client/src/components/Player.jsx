@@ -15,7 +15,7 @@ function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
 
-export default function Player({ track, playback, onSkip, skipDisabledReason }) {
+export default function Player({ track, playback, onSkip, skipDisabledReason, user }) {
   const [elapsed, setElapsed] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [buffering, setBuffering] = useState(false);
@@ -103,7 +103,7 @@ export default function Player({ track, playback, onSkip, skipDisabledReason }) 
 
   return (
     <div className="player-bar" role="region" aria-label="Now playing">
-      {stream?.adBreak ? (
+      {stream?.adBreak && user?.tier !== 'PREMIUM' ? (
         <div className="ad-banner">Advertisement — upgrade to Premium to remove ads.</div>
       ) : null}
 
@@ -185,9 +185,12 @@ export default function Player({ track, playback, onSkip, skipDisabledReason }) 
 
           {skipDisabledReason ? (
             <span className="skip-note">{skipDisabledReason}</span>
-          ) : stream && stream.skipsRemaining !== Infinity ? (
-            <span className="skip-note">{stream.skipsRemaining} skips left today</span>
-          ) : null}
+          ) : (
+            // Show remaining skips only for explicit Free users
+            user?.tier === 'FREE' && stream && stream.skipsRemaining !== Infinity ? (
+              <span className="skip-note">{stream.skipsRemaining} skips left today</span>
+            ) : null
+          )}
         </div>
       </div>
     </div>

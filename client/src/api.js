@@ -24,6 +24,7 @@ export const api = {
     request('/auth/register', { method: 'POST', body: { email, password, displayName } }),
   login: (email, password) => request('/auth/login', { method: 'POST', body: { email, password } }),
   me: () => request('/auth/me', { auth: true }),
+  updateProfile: (data) => request('/auth/me', { method: 'PATCH', body: data, auth: true }),
 
   songs: (q = '') => request(`/songs${q ? `?q=${encodeURIComponent(q)}` : ''}`),
   play: (songId) => request(`/songs/${songId}/play`, { method: 'POST', auth: true }),
