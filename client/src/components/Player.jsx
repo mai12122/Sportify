@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { api } from '../api';
 import { RotateCcw, Pause, Play, SkipForward } from 'lucide-react';
+import CoverArt from './CoverArt.jsx';
 
 function formatDuration(sec) {
   const m = Math.floor(sec / 60);
@@ -109,7 +110,12 @@ export default function Player({ track, playback, onSkip, skipDisabledReason, us
 
       <div className="player-inner">
         <div className="player-track">
-          <span className="player-cover" style={{ background: track.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }} />
+          <CoverArt
+            className="player-cover"
+            artist={track.artist}
+            album={track.album}
+            fallbackColor={track.coverColor}
+          />
           <div>
             <div className="player-title">{track.title}</div>
             <div className="player-artist">{track.artist}</div>

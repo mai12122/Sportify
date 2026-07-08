@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Home, Search, Star, Plus, Trash2 } from 'lucide-react';
+import CoverArt from './CoverArt.jsx';
 
 const NAV = [
   { id: 'home', label: 'Home', icon: Home },
@@ -109,7 +110,13 @@ export default function Sidebar({ view, setView, playlists, activePlaylistId, se
                 setView('playlist');
               }}
             >
-              <span className="playlist-swatch" style={{ background: p.tracks[0]?.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }} />
+              <CoverArt
+                as="span"
+                className="playlist-swatch"
+                artist={p.tracks[0]?.artist}
+                album={p.tracks[0]?.album}
+                fallbackColor={p.tracks[0]?.coverColor}
+              />
               <span className="playlist-name">{p.name}</span>
               <span className="playlist-count">{p.tracks.length}</span>
             </button>

@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/songs', require('./routes/songs'));
+app.use('/api/artists', require('./routes/artists'));
 app.use('/api/playlists', require('./routes/playlists'));
 app.use('/api/subscription', require('./routes/subscription'));
 

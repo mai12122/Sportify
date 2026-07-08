@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../api';
 import { Play } from 'lucide-react';
 import TrackRow from './TrackRow.jsx';
+import CoverArt from './CoverArt.jsx';
+import ArtistAvatar from './ArtistAvatar.jsx';
 
 export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToPlaylist }) {
   const [songs, setSongs] = useState([]);
+  const [artists, setArtists] = useState([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +22,11 @@ export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToP
       active = false;
     };
   }, [query]);
+
+  useEffect(() => {
+    if (mode !== 'home') return;
+    api.artists().then((data) => setArtists(data.artists));
+  }, [mode]);
 
   // Split songs into featured (first 6) and the rest for home view
   const featuredSongs = songs.slice(0, 6);
@@ -43,6 +51,33 @@ export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToP
         />
       )}
 
+      {mode === 'home' && query && (
+        <div className="filter-chip">
+          <span>Showing songs by "{query}"</span>
+          <button onClick={() => setQuery('')}>Clear</button>
+        </div>
+      )}
+
+      {/* Artist avatar row */}
+      {mode === 'home' && artists.length > 0 && (
+        <>
+          <div className="section-head">
+            <h2>Artists</h2>
+          </div>
+          <div className="artist-row">
+            {artists
+              .filter((a) => a.songCount > 0)
+              .map((a) => (
+                <div className="artist-row-item" key={a.id}>
+                  <ArtistAvatar name={a.name} size={96} onClick={() => setQuery(a.name)} />
+                  <p className="artist-row-name">{a.name}</p>
+                  <p className="artist-row-count">{a.songCount} songs</p>
+                </div>
+              ))}
+          </div>
+        </>
+      )}
+
       {/* Card grid for home view */}
       {mode === 'home' && !loading && songs.length > 0 && (
         <>
@@ -52,11 +87,11 @@ export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToP
           <div className="card-grid">
             {featuredSongs.map((track) => (
               <div className="card" key={track.id} onClick={() => onPlay(track)}>
-                <div
+                <CoverArt
                   className="card-art"
-                  style={{
-                    background: track.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)',
-                  }}
+                  artist={track.artist}
+                  album={track.album}
+                  fallbackColor={track.coverColor}
                 >
                   <button
                     className="card-play"
@@ -67,7 +102,7 @@ export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToP
                   >
                     <Play size={18} fill="currentColor" strokeWidth={0} />
                   </button>
-                </div>
+                </CoverArt>
                 <p className="card-title">{track.title}</p>
                 <p className="card-subtitle">{track.artist}</p>
               </div>

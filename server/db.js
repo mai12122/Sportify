@@ -79,6 +79,9 @@ if (artistCount === 0) {
     ['Juno Ledger', 'Singer-songwriter, folk-adjacent.'],
     ['Olivia Rodrigo', 'Pop-rock singer-songwriter known for confessional lyrics.'],
     ['Ariana Grande', 'Pop and R&B artist with a four-octave vocal range.'],
+    ['Taylor Swift', 'Singer-songwriter spanning country, pop, and indie-folk eras.'],
+    ['Stray Kids', 'South Korean boy group known for self-produced, high-energy tracks.'],
+    ['ATEEZ', 'South Korean boy group known for pirate-themed concepts and powerful performances.'],
   ];
   const artistIds = artists.map(a => insertArtist.run(...a).lastInsertRowid);
 
@@ -91,39 +94,133 @@ if (artistCount === 0) {
     ['Glass Horizon', 0, 'Afterglow', 214, 0, 12450],
     ['Static Bloom', 0, 'Afterglow', 198, 1, 8320],
     ['Neon Ledger', 0, 'Afterglow', 208, 5, 9100],
-    
+
     // Marlowe Str. (index 1)
     ['Paper Tide', 1, 'Slow Rooms', 231, 2, 15230],
     ['Low Light', 1, 'Slow Rooms', 187, 3, 6110],
-    
+
     // The Vantablacks (index 2)
     ['Concrete Halo', 2, 'Kill the Radio', 245, 4, 20110],
     ['Night Shift', 2, 'Kill the Radio', 202, 5, 9870],
     ['Amber Static', 2, 'Kill the Radio', 190, 4, 3300],
-    
+
     // Coral Static (index 3)
     ['Salt Water', 3, 'Coral Static', 265, 0, 4210],
     ['Drift Mode', 3, 'Coral Static', 300, 1, 5010],
-    
+
     // Juno Ledger (index 4)
     ['Ledger Lines', 4, 'Open Roads', 176, 2, 13200],
     ['Quiet Fields', 4, 'Open Roads', 220, 3, 7890],
-    
-    // Olivia Rodrigo (index 5)
+
+    // ---- Olivia Rodrigo (index 5) — SOUR (2021) + GUTS (2023) ----
     ['drivers license', 5, 'SOUR', 242, 2, 2450000],
     ['good 4 u', 5, 'SOUR', 178, 3, 1890000],
     ['deja vu', 5, 'SOUR', 215, 4, 1230000],
+    ['traitor', 5, 'SOUR', 229, 1, 1100000],
+    ['brutal', 5, 'SOUR', 137, 0, 890000],
+    ['1 step forward, 3 steps back', 5, 'SOUR', 176, 5, 610000],
+    ['jealousy, jealousy', 5, 'SOUR', 174, 2, 720000],
+    ['favorite crime', 5, 'SOUR', 176, 3, 590000],
+    ['happier', 5, 'SOUR', 179, 4, 840000],
+    ['enough for you', 5, 'SOUR', 210, 1, 560000],
     ['vampire', 5, 'GUTS', 219, 5, 980000],
     ['bad idea right?', 5, 'GUTS', 185, 0, 750000],
-    ['traitor', 5, 'SOUR', 229, 1, 1100000],
-    
-    // Ariana Grande (index 6)
+    ['get him back!', 5, 'GUTS', 211, 2, 640000],
+    ['love is embarrassing', 5, 'GUTS', 172, 3, 520000],
+    ['making the bed', 5, 'GUTS', 189, 4, 480000],
+    ['all-american bitch', 5, 'GUTS', 174, 1, 700000],
+    ['lacy', 5, 'GUTS', 148, 5, 430000],
+    ['ballad of a homeschooled girl', 5, 'GUTS', 191, 0, 410000],
+    ['pretty isn\u2019t pretty', 5, 'GUTS', 174, 2, 390000],
+    ['teenage dream', 5, 'GUTS', 249, 3, 620000],
+
+    // ---- Ariana Grande (index 6) — Sweetener, thank u next, Positions, eternal sunshine ----
     ['thank u, next', 6, 'thank u, next', 205, 3, 2100000],
     ['7 rings', 6, 'thank u, next', 178, 4, 1950000],
-    ['positions', 6, 'Positions', 192, 5, 1450000],
-    ['pov', 6, 'Positions', 211, 0, 980000],
-    ['imagine', 6, 'thank u, next', 212, 1, 1120000],
-    ['34+35', 6, 'Positions', 173, 2, 1340000],
+    ['imagine', 6, 'thank u, next', 197, 5, 1120000],
+    ['NASA', 6, 'thank u, next', 185, 0, 640000],
+    ['needy', 6, 'thank u, next', 202, 1, 590000],
+    ['positions', 6, 'Positions', 172, 2, 1450000],
+    ['34+35', 6, 'Positions', 173, 3, 1340000],
+    ['pov', 6, 'Positions', 211, 4, 980000],
+    ['motive', 6, 'Positions', 168, 5, 520000],
+    ['off the table', 6, 'Positions', 220, 0, 470000],
+    ['God is a woman', 6, 'Sweetener', 197, 1, 1180000],
+    ['no tears left to cry', 6, 'Sweetener', 226, 2, 1520000],
+    ['breathin', 6, 'Sweetener', 213, 3, 780000],
+    ['successful', 6, 'Sweetener', 223, 4, 410000],
+    ['R.E.M.', 6, 'Sweetener', 217, 5, 360000],
+    ['yes, and?', 6, 'eternal sunshine', 227, 0, 900000],
+    ['we can\u2019t be friends', 6, 'eternal sunshine', 231, 1, 1050000],
+    ['the boy is mine', 6, 'eternal sunshine', 189, 2, 610000],
+    ['true story', 6, 'eternal sunshine', 202, 3, 340000],
+    ['supernatural', 6, 'eternal sunshine', 214, 4, 480000],
+
+    // ---- Taylor Swift (index 7) — 1989, Lover, folklore, Midnights ----
+    ['Welcome To New York', 7, '1989', 212, 3, 610000],
+    ['Blank Space', 7, '1989', 231, 4, 2100000],
+    ['Style', 7, '1989', 231, 5, 1980000],
+    ['Shake It Off', 7, '1989', 219, 0, 2400000],
+    ['Wildest Dreams', 7, '1989', 220, 1, 1750000],
+    ['Cruel Summer', 7, 'Lover', 178, 2, 2350000],
+    ['Lover', 7, 'Lover', 221, 3, 1200000],
+    ['The Man', 7, 'Lover', 190, 4, 780000],
+    ['Paper Rings', 7, 'Lover', 197, 5, 640000],
+    ['Death By A Thousand Cuts', 7, 'Lover', 220, 0, 520000],
+    ['cardigan', 7, 'folklore', 239, 1, 1450000],
+    ['the 1', 7, 'folklore', 210, 2, 690000],
+    ['august', 7, 'folklore', 261, 3, 980000],
+    ['betty', 7, 'folklore', 294, 4, 720000],
+    ['exile', 7, 'folklore', 285, 5, 860000],
+    ['Anti-Hero', 7, 'Midnights', 200, 0, 2600000],
+    ['Lavender Haze', 7, 'Midnights', 202, 1, 1100000],
+    ['Karma', 7, 'Midnights', 205, 2, 940000],
+    ['Snow On The Beach', 7, 'Midnights', 256, 3, 610000],
+    ['Bejeweled', 7, 'Midnights', 194, 4, 700000],
+
+    // ---- Stray Kids (index 8) — NOEASY, ODDINARY, MAXIDENT, 5-STAR ----
+    ['Thunderous', 8, 'NOEASY', 175, 5, 1100000],
+    ['Domino', 8, 'NOEASY', 197, 0, 890000],
+    ['Silent Cry', 8, 'NOEASY', 210, 1, 520000],
+    ['Ex', 8, 'NOEASY', 178, 2, 410000],
+    ['Sunshine', 8, 'NOEASY', 191, 3, 380000],
+    ['MANIAC', 8, 'ODDINARY', 165, 4, 1050000],
+    ['Venom', 8, 'ODDINARY', 172, 5, 470000],
+    ['Freeze', 8, 'ODDINARY', 188, 0, 360000],
+    ['Muddy Water', 8, 'ODDINARY', 203, 1, 320000],
+    ['Star Lost', 8, 'ODDINARY', 214, 2, 290000],
+    ['CASE 143', 8, 'MAXIDENT', 168, 3, 980000],
+    ['Charmer', 8, 'MAXIDENT', 179, 4, 420000],
+    ['Lonely St.', 8, 'MAXIDENT', 195, 5, 350000],
+    ['Slump', 8, 'MAXIDENT', 176, 3, 300000],
+    ['Ssick', 8, 'MAXIDENT', 182, 4, 280000],
+    ['S-Class', 8, '5-STAR', 173, 0, 1250000],
+    ['Social Path', 8, '5-STAR', 184, 1, 610000],
+    ['Topline', 8, '5-STAR', 198, 2, 470000],
+    ['Church', 8, '5-STAR', 190, 5, 340000],
+    ['Walkin On Water', 8, '5-STAR', 205, 0, 260000],
+
+    // ---- ATEEZ (index 9) — TREASURE, ZERO: FEVER Pt.1 & Pt.3, THE WORLD EP.FIN ----
+    ['Pirate King', 9, 'TREASURE EP.FIN : All To Action', 197, 1, 780000],
+    ['Treasure', 9, 'TREASURE EP.FIN : All To Action', 210, 2, 520000],
+    ['Wonderland', 9, 'TREASURE EP.FIN : All To Action', 185, 3, 610000],
+    ['Say My Name', 9, 'TREASURE EP.FIN : All To Action', 199, 4, 470000],
+    ['Hala Hala', 9, 'TREASURE EP.FIN : All To Action', 203, 5, 390000],
+    ['Inception', 9, 'ZERO : FEVER Part.1', 213, 0, 890000],
+    ['Answer', 9, 'ZERO : FEVER Part.1', 191, 1, 620000],
+    ['Higher', 9, 'ZERO : FEVER Part.1', 204, 2, 480000],
+    ['Deja Vu', 9, 'ZERO : FEVER Part.1', 187, 3, 350000],
+    ['Guerrilla', 9, 'ZERO : FEVER Part.1', 196, 4, 410000],
+    ['THANXX', 9, 'ZERO : FEVER Part.3', 176, 5, 1050000],
+    ['BOUNCY (K-HOT CHILLI PEPPERS)', 9, 'ZERO : FEVER Part.3', 168, 0, 720000],
+    ['Crazy Form', 9, 'ZERO : FEVER Part.3', 182, 1, 380000],
+    ['Halazia', 9, 'ZERO : FEVER Part.3', 194, 2, 330000],
+    ['Bad Cupid', 9, 'ZERO : FEVER Part.3', 179, 3, 460000],
+    ['Set It Off', 9, 'THE WORLD EP.FIN : WILL', 208, 4, 690000],
+    ['Lemon Drop', 9, 'THE WORLD EP.FIN : WILL', 190, 5, 410000],
+    ['Ice On My Teeth', 9, 'THE WORLD EP.FIN : WILL', 201, 0, 380000],
+    ['WORK', 9, 'THE WORLD EP.FIN : WILL', 174, 1, 290000],
+    ['Wave', 9, 'THE WORLD EP.FIN : WILL', 197, 2, 260000],
   ];
   for (const [title, artistIdx, album, dur, colorIdx, plays] of songs) {
     insertSong.run(title, artistIds[artistIdx], album, dur, palette[colorIdx], plays);

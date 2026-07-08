@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Play, Plus, X } from 'lucide-react';
+import CoverArt from './CoverArt.jsx';
 
 function formatDuration(sec) {
   const m = Math.floor(sec / 60);
@@ -32,9 +33,12 @@ export default function TrackRow({ track, index, isPlaying, onPlay, playlists, o
         )}
       </div>
 
-      <button
+      <CoverArt
+        as="button"
         className="track-cover"
-        style={{ background: track.coverColor || 'linear-gradient(135deg, #3a3a3a, #1a1a1a)' }}
+        artist={track.artist}
+        album={track.album}
+        fallbackColor={track.coverColor}
         onClick={() => onPlay(track)}
         aria-label={`Play ${track.title}`}
       />

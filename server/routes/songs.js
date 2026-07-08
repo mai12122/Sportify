@@ -19,10 +19,21 @@ router.get('/', (req, res) => {
     let rows;
     
     if (q && q.trim()) {
-      const searchTerm = `%${q.trim()}%`;
+      const raw = q.trim();
+      // Normalize input spacing only; keep original casing too.
+      const normalizedSpaces = raw.replace(/\s+/g, ' ');
+      const searchTermRaw = `%${normalizedSpaces}%`;
+      const searchTermLower = `%${normalizedSpaces.toLowerCase()}%`;
+
+      // Be defensive about SQLite collation differences: match both the original and lowercased forms.
       rows = db
-        .prepare(`${SELECT_SONGS} WHERE songs.title LIKE ? OR artists.name LIKE ? OR songs.album LIKE ? ORDER BY songs.plays DESC`)
-        .all(searchTerm, searchTerm, searchTerm);
+        .prepare(
+          `${SELECT_SONGS} WHERE \
+            songs.title LIKE ? OR artists.name LIKE ? OR songs.album LIKE ? OR \
+            LOWER(songs.title) LIKE ? OR LOWER(artists.name) LIKE ? OR LOWER(songs.album) LIKE ? \
+            ORDER BY songs.plays DESC`
+        )
+        .all(searchTermRaw, searchTermRaw, searchTermRaw, searchTermLower, searchTermLower, searchTermLower);
     } else {
       rows = db.prepare(`${SELECT_SONGS} ORDER BY songs.plays DESC`).all();
     }

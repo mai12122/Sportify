@@ -27,6 +27,7 @@ export const api = {
   updateProfile: (data) => request('/auth/me', { method: 'PATCH', body: data, auth: true }),
 
   songs: (q = '') => request(`/songs${q ? `?q=${encodeURIComponent(q)}` : ''}`),
+  artists: () => request('/artists'),
   play: (songId) => request(`/songs/${songId}/play`, { method: 'POST', auth: true }),
   skip: (songId) => request(`/songs/${songId}/skip`, { method: 'POST', auth: true }),
   adapt: (songId) => request(`/songs/${songId}/adapt`, { method: 'POST', auth: true }),

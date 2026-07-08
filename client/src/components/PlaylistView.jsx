@@ -1,12 +1,19 @@
 import React from 'react';
 import TrackRow from './TrackRow.jsx';
+import CoverArt from './CoverArt.jsx';
 
 export default function PlaylistView({ playlist, currentTrack, onPlay, onRemove, onDelete }) {
   if (!playlist) return null;
+  const heroTrack = playlist.tracks[0];
   return (
     <div className="view">
       <div className="playlist-hero">
-        <div className="playlist-hero-art" style={{ background: playlist.tracks[0]?.coverColor || '#3a3f3d' }} />
+        <CoverArt
+          className="playlist-hero-art"
+          artist={heroTrack?.artist}
+          album={heroTrack?.album}
+          fallbackColor={heroTrack?.coverColor || '#3a3f3d'}
+        />
         <div>
           <div className="eyebrow">Playlist</div>
           <h1>{playlist.name}</h1>
