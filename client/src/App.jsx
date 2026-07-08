@@ -4,6 +4,7 @@ import Login from './components/Login.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import TopBar from './components/TopBar.jsx';
 import Browse from './components/Browse.jsx';
+import ArtistProfile from './components/ArtistProfile.jsx';
 import PlaylistView from './components/PlaylistView.jsx';
 import Premium from './components/Premium.jsx';
 import Player from './components/Player.jsx';
@@ -12,6 +13,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [checkingSession, setCheckingSession] = useState(true);
   const [view, setView] = useState('home');
+  const [activeArtistId, setActiveArtistId] = useState(null);
   const [playlists, setPlaylists] = useState([]);
   const [activePlaylistId, setActivePlaylistId] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
@@ -50,6 +52,17 @@ export default function App() {
     setPlaylists([]);
     setCurrentTrack(null);
     setPlayback(null);
+    setActiveArtistId(null);
+    setView('home');
+  }
+
+  function handleOpenArtistProfile(artistId) {
+    setActiveArtistId(artistId);
+    setView('artist');
+  }
+
+  function handleCloseArtistProfile() {
+    setActiveArtistId(null);
     setView('home');
   }
 
@@ -162,6 +175,17 @@ export default function App() {
           {(view === 'home' || view === 'search') && (
             <Browse
               mode={view}
+              currentTrack={currentTrack}
+              onPlay={handlePlay}
+              playlists={playlists}
+              onAddToPlaylist={handleAddToPlaylist}
+              onArtistSelect={handleOpenArtistProfile}
+            />
+          )}
+          {view === 'artist' && activeArtistId && (
+            <ArtistProfile
+              artistId={activeArtistId}
+              onClose={handleCloseArtistProfile}
               currentTrack={currentTrack}
               onPlay={handlePlay}
               playlists={playlists}

@@ -72,45 +72,45 @@ const artistCount = db.prepare('SELECT COUNT(*) AS c FROM artists').get().c;
 if (artistCount === 0) {
   const insertArtist = db.prepare('INSERT INTO artists (name, bio) VALUES (?, ?)');
   const artists = [
-    ['Nova Ridge', 'Indie synth duo from Portland.'],
-    ['Marlowe Str.', 'Lo-fi bedroom pop.'],
-    ['The Vantablacks', 'Post-punk revival act.'],
-    ['Coral Static', 'Ambient / downtempo electronic.'],
-    ['Juno Ledger', 'Singer-songwriter, folk-adjacent.'],
+    ['Frank Ocean', 'Genre-defining R&B singer-songwriter.'],
+    ['Sabrina Carpenter', 'Pop artist with warm vocals and intimate storytelling.'],
+    ['NewJeans', 'K-pop girl group known for fresh sound and strong visuals.'],
+    ['SZA', 'R&B singer-songwriter blending soul, hip-hop, and alt-pop.'],
+    ['Harry Styles', 'Pop-rock artist blending retro and modern sounds.'],
     ['Olivia Rodrigo', 'Pop-rock singer-songwriter known for confessional lyrics.'],
     ['Ariana Grande', 'Pop and R&B artist with a four-octave vocal range.'],
     ['Taylor Swift', 'Singer-songwriter spanning country, pop, and indie-folk eras.'],
     ['Stray Kids', 'South Korean boy group known for self-produced, high-energy tracks.'],
     ['ATEEZ', 'South Korean boy group known for pirate-themed concepts and powerful performances.'],
   ];
-  const artistIds = artists.map(a => insertArtist.run(...a).lastInsertRowid);
+  const artistIds = artists.map((a) => insertArtist.run(...a).lastInsertRowid);
 
   const insertSong = db.prepare(
     'INSERT INTO songs (title, artist_id, album, duration_sec, cover_color, plays) VALUES (?, ?, ?, ?, ?, ?)'
   );
   const palette = ['#1ED760', '#F5A623', '#E85D75', '#4C6FFF', '#9B59B6', '#2EC4B6'];
   const songs = [
-    // Nova Ridge (index 0)
-    ['Glass Horizon', 0, 'Afterglow', 214, 0, 12450],
-    ['Static Bloom', 0, 'Afterglow', 198, 1, 8320],
-    ['Neon Ledger', 0, 'Afterglow', 208, 5, 9100],
+    // Frank Ocean (index 0)
+    ['Thinkin Bout You', 0, 'Channel Orange', 200, 0, 1500000],
+    ['Pyramids', 0, 'Channel Orange', 592, 1, 800000],
+    ['Pink + White', 0, 'Blonde', 184, 5, 2200000],
 
-    // Marlowe Str. (index 1)
-    ['Paper Tide', 1, 'Slow Rooms', 231, 2, 15230],
-    ['Low Light', 1, 'Slow Rooms', 187, 3, 6110],
+    // Sabrina Carpenter (index 1)
+    ['Espresso', 1, "Emails I Can't Send", 175, 2, 2500000],
+    ['Please Please Please', 1, "Emails I Can't Send", 186, 3, 2100000],
 
-    // The Vantablacks (index 2)
-    ['Concrete Halo', 2, 'Kill the Radio', 245, 4, 20110],
-    ['Night Shift', 2, 'Kill the Radio', 202, 5, 9870],
-    ['Amber Static', 2, 'Kill the Radio', 190, 4, 3300],
+    // NewJeans (index 2)
+    ['Hype Boy', 2, 'New Jeans', 179, 4, 1300000],
+    ['Ditto', 2, 'New Jeans', 186, 5, 1700000],
+    ['Super Shy', 2, 'Get Up', 154, 4, 1500000],
 
-    // Coral Static (index 3)
-    ['Salt Water', 3, 'Coral Static', 265, 0, 4210],
-    ['Drift Mode', 3, 'Coral Static', 300, 1, 5010],
+    // SZA (index 3)
+    ['Kill Bill', 3, 'SOS', 153, 0, 2600000],
+    ['Snooze', 3, 'SOS', 201, 1, 2100000],
 
-    // Juno Ledger (index 4)
-    ['Ledger Lines', 4, 'Open Roads', 176, 2, 13200],
-    ['Quiet Fields', 4, 'Open Roads', 220, 3, 7890],
+    // Harry Styles (index 4)
+    ['As It Was', 4, "Harry's House", 167, 2, 3100000],
+    ['Watermelon Sugar', 4, 'Fine Line', 174, 3, 2400000],
 
     // ---- Olivia Rodrigo (index 5) — SOUR (2021) + GUTS (2023) ----
     ['drivers license', 5, 'SOUR', 242, 2, 2450000],

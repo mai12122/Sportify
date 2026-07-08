@@ -1,13 +1,14 @@
 import React from 'react';
+import useArtistPhoto from '../hooks/useArtistPhoto.js';
 
-// We deliberately don't hotlink real photos of real people here (rights +
-// reliability), so each artist gets a distinct, deterministic gradient
-// avatar with their initials instead — same idea as Slack/Google avatars.
+// Each artist avatar first tries to render a real artist photo from the
+// iTunes artwork lookup. If no image is available, it falls back to a
+// deterministic gradient with initials.
 function hashString(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i += 1) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
+    hash = (hash << 5) - hash + str.codePointAt(i);
+    hash = Math.trunc(hash);
   }
   return Math.abs(hash);
 }
@@ -23,6 +24,7 @@ function initials(name) {
 }
 
 export default function ArtistAvatar({ name, size = 96, className = '', onClick }) {
+  const { url } = useArtistPhoto(name);
   const h = hashString(name || '');
   const hue1 = h % 360;
   const hue2 = (hue1 + 55) % 360;
@@ -33,11 +35,16 @@ export default function ArtistAvatar({ name, size = 96, className = '', onClick 
   return (
     <Tag
       className={`artist-avatar ${className}`}
-      style={{ width: size, height: size, background: gradient, fontSize: size * 0.34 }}
+      style={{
+        width: size,
+        height: size,
+        background: url ? `url(${url}) center/cover no-repeat` : gradient,
+        fontSize: size * 0.34,
+      }}
       onClick={onClick}
       title={name}
     >
-      {initials(name)}
+      {!url && initials(name)}
     </Tag>
   );
 }

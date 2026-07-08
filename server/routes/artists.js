@@ -22,4 +22,23 @@ router.get('/', (req, res) => {
   }
 });
 
+router.get('/:id', (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid artist ID.' });
+    }
+
+    const row = db.prepare('SELECT id, name, bio FROM artists WHERE id = ?').get(id);
+    if (!row) {
+      return res.status(404).json({ error: 'Artist not found.' });
+    }
+
+    res.json({ artist: row });
+  } catch (err) {
+    console.error('Error fetching artist:', err);
+    res.status(500).json({ error: 'Failed to fetch artist.' });
+  }
+});
+
 module.exports = router;

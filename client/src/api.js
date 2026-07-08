@@ -26,8 +26,13 @@ export const api = {
   me: () => request('/auth/me', { auth: true }),
   updateProfile: (data) => request('/auth/me', { method: 'PATCH', body: data, auth: true }),
 
-  songs: (q = '') => request(`/songs${q ? `?q=${encodeURIComponent(q)}` : ''}`),
+  songs: (q = '') => {
+    const path = q ? `/songs?q=${encodeURIComponent(q)}` : '/songs';
+    return request(path);
+  },
   artists: () => request('/artists'),
+  artist: (artistId) => request(`/artists/${artistId}`),
+  artistSongs: (artistId) => request(`/songs/artist/${artistId}`),
   play: (songId) => request(`/songs/${songId}/play`, { method: 'POST', auth: true }),
   skip: (songId) => request(`/songs/${songId}/skip`, { method: 'POST', auth: true }),
   adapt: (songId) => request(`/songs/${songId}/adapt`, { method: 'POST', auth: true }),

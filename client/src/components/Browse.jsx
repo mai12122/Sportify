@@ -5,7 +5,7 @@ import TrackRow from './TrackRow.jsx';
 import CoverArt from './CoverArt.jsx';
 import ArtistAvatar from './ArtistAvatar.jsx';
 
-export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToPlaylist }) {
+export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToPlaylist, onArtistSelect }) {
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
   const [query, setQuery] = useState('');
@@ -69,7 +69,7 @@ export default function Browse({ mode, currentTrack, onPlay, playlists, onAddToP
               .filter((a) => a.songCount > 0)
               .map((a) => (
                 <div className="artist-row-item" key={a.id}>
-                  <ArtistAvatar name={a.name} size={96} onClick={() => setQuery(a.name)} />
+                  <ArtistAvatar name={a.name} size={96} onClick={() => onArtistSelect?.(a.id)} />
                   <p className="artist-row-name">{a.name}</p>
                   <p className="artist-row-count">{a.songCount} songs</p>
                 </div>
